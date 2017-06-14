@@ -38,6 +38,7 @@ public:
         return sum;
     }
 
+    //нижче синглтон
     static Husband* getInstance()
     {
         static Husband* instance;
@@ -45,14 +46,17 @@ public:
             instance = new Husband;
         return instance;
     }
-    Husband(Husband const&) = delete;
-    Husband& operator= (Husband const&) = delete;
+
+    Husband(Husband const&) = delete;//this is  for singleton
+    Husband& operator= (Husband const&) = delete;//this is  for singleton
 
 private:
+    //цей приватний конструктор  для синглтона
     Husband(){
         shops[0] = new EquipmentShop;
         shops[1] = new ProductsShop;
     }
+    //нижче вже не синглтон
     Shop* shops[2];
 
     std::vector<string> itemsToBuy;
