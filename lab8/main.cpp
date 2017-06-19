@@ -38,6 +38,7 @@ DWORD WINAPI  chronometer(LPVOID lpParam) {
         currentDurationSeconds++;
         Sleep(1000);
     }
+    return 0;
 }
 DWORD WINAPI  showMessageWithDelay(LPVOID lpParam) {
     pfparam params = (pfparam) lpParam;

@@ -9,3 +9,8 @@ add_executable(untitled1-7 ${SOURCE_FILES7})
 set(SOURCE_FILES8 lab8/main.cpp)
 add_executable(untitled1-8 ${SOURCE_FILES8} lab8/main.cpp)
 
+set(SOURCE_FILES9 lab9/main.cpp lab9/Shop.cpp)
+add_executable(untitled1-9 ${SOURCE_FILES9} lab9/main.cpp)
+
+
+
