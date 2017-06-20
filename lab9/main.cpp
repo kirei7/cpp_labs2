@@ -1,20 +1,14 @@
-#include <conio.h>
+#include <stdio.h>
 #include "Shop.cpp"
 
 
 
 int main() {
-/*
 
     Shop shop;
     shop.work();
-*/
 
-    Customer customer = Customer("customer");
-    printf("%d", customer.getNextDeptNum());
-    printf("%d", customer.getNextDeptNum());
-    printf("%d", customer.getNextDeptNum());
 
-    getch();
+    system("pause");
     return 0;
 }
