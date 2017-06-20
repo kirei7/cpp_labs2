@@ -19,11 +19,9 @@ public:
         }
         else {
             nextDeptNum = 0;
-            printf("zeroed");
         }
     }
     int getNextDeptNum() {
-        printf("%d", nextDeptNum);
         return nextDeptNum++;
     }
 private:
