@@ -9,9 +9,7 @@ public:
     string getName() {
         return name;
     }
-    void doShopping(Department* department) {
-        department->acceptVisitor(name);
-    }
+    //функция гоняет по кругу числа от 0 до 2, как бы номера отделов - побывали в первом, пошли во второй и т.д.
     void incrementNextDeptNum() {
         if (nextDeptNum < 2) {
             this->nextDeptNum = nextDeptNum + 1;
@@ -22,7 +20,7 @@ public:
         }
     }
     int getNextDeptNum() {
-        return nextDeptNum++;
+        return nextDeptNum;
     }
 private:
     string name;
