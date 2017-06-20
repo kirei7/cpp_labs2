@@ -11,11 +11,11 @@ typedef struct customer_wrapper {
 
 const int N = 3; //количество отделов
 const int CUSTOMERS_NUM = 10; //количество покупателей
-
+const DWORD mutexFree = 4294967295;
 
 static DWORD WINAPI goShopping(LPVOID lpParam);
 
-
+HANDLE amutex[N];
 
 class Shop {
 public:
@@ -30,6 +30,7 @@ public:
     void work() {
         Customer customers[CUSTOMERS_NUM];
         fillWithCustomers(customers);
+        createMutexObjects(amutex);
 
         HANDLE hThreadArray[CUSTOMERS_NUM];
         DWORD dwThreadIdArray[CUSTOMERS_NUM];
@@ -55,9 +56,18 @@ public:
     }
 private:
     Department depts[N];
+
     void fillWithCustomers(Customer* customers) {
         for (int i = 1; i <= CUSTOMERS_NUM; i++) {
             customers[i-1] = Customer("customer-" + to_string(i));
+        }
+    }
+    void createMutexObjects(HANDLE* mutex) {
+        for (int i = 0; i < 0; i++) {
+            mutex[i] = CreateMutex(
+                    NULL,              // default security attributes
+                    FALSE,             // initially not owned
+                    NULL);             // unnamed mutex
         }
     }
 };
@@ -67,7 +77,30 @@ static DWORD WINAPI goShopping(LPVOID lpParam) {
     customerData = (pcustomer_wrapper) lpParam;
     Customer* customer;
     customer = customerData->customer;
-    int deptNumber = customer->getNextDeptNum();
-    customer->incrementNextDeptNum();
-    printf("\n%s", customerData->departments[deptNumber].getName().c_str());
+    for(int i = 0; i < 20; i++) {
+        int deptNumber = customer->getNextDeptNum();
+
+        DWORD dwWaitResult;
+        dwWaitResult = WaitForSingleObject(
+                amutex[deptNumber],    // handle to mutex
+                INFINITE);  // no time-out interval
+
+        switch (dwWaitResult)
+        {
+            // The thread got ownership of the mutex
+            case mutexFree:
+                try {
+                    customerData->departments[deptNumber].acceptVisitor(customer->getName());
+                    customer->incrementNextDeptNum();
+                    //printf("\n%s", customerData->departments[deptNumber].getName().c_str());
+                } catch(...){}
+                // Release ownership of the mutex object
+                /*if (! ReleaseMutex(mutex))
+                {
+                    cout<<"mutex error";
+                }*/
+                ReleaseMutex(amutex[deptNumber]);
+                break;
+        }
+    }
 }
